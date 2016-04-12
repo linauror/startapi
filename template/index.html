@@ -1,0 +1,22 @@
+<?php $this->view('header')?>
+<div id="container" class="dd">
+	<h2 class="page_title"><p class="action"><a href="<?php echo $this->site_url('type_add')?>">分类新增</a></p>接口分类</h2>
+	<ol class="lists dd-list">
+		<?php 
+		if ($type_lists) {
+			foreach ($type_lists as $line) {
+		?>
+		<li class="dd-item" data-id="<?php echo $line['id']?>" title="<?php echo $line['desc']?>">
+			<p class="action"><a href="<?php echo $this->site_url('type_update') . '?id=' . $line['id']?>">编辑</a> | <a href="<?php echo $this->site_url('type_del') . '?id=' . $line['id']?>" class="confirm_del">删除</a></p>
+			<a class="dd-handle" title="拖动以排序" href="javascript:;"></a><a href="<?php echo $this->site_url('api_lists') . '?type_id=' . $line['id']?>"><?php echo $line['title']?></a>
+		</li>
+		<?php } } ?>
+	</ol>
+</div>
+<script type="text/javascript" src="<?php echo TEMPLATE_URL?>js/jquery.nestable.js"></script>
+<script type="text/javascript">
+$(function() {
+	$('.dd').nestable({'maxDepth' : 1}).on('change', function() {list_sort('<?php echo $this->site_url('type_sort')?>')});	
+})
+</script>
+<?php $this->view('footer')?>

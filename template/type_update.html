@@ -1,0 +1,11 @@
+<?php $this->view('header')?>
+<div id="container">
+	<h2 class="page_title"><?php echo $header_title?></a></h2>
+	<form class="form" method="post">
+		<input type="hidden" name="id" value="<?php echo $data['id']?>" />
+		<p><label>分类名称：</label><input type="text" required="true" maxlength="20" name="title" value="<?php echo $data['title']?>" /></p>
+		<p><label>分类描述：</label><textarea name="desc"><?php echo $data['desc']?></textarea></p>
+		<p><label>&nbsp;</label><input type="submit" value="提 交" /></p>
+	</form>
+</div>
+<?php $this->view('footer')?>

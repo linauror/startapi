@@ -1,0 +1,77 @@
+<?php $this->view('header')?>
+<div id="container">
+	<h2 class="page_title"><?php echo $header_title?></a></h2>
+	<form class="form" method="post">
+		<input type="hidden" name="type_id" value="<?php echo $type_info['id']?>" />
+		<p><label>接口名称：</label><input type="text" required="true" maxlength="20" name="title" /></p>
+		<p><label>接口URI：</label><input type="text" required="true" maxlength="50" name="uri" /></p>
+		<p><label>请求方式：</label><select name="method_type"><option value="get">GET</option><option value="post">POST</option></select></p>
+		<p><label>需要授权：</label><input type="checkbox" name="is_authed" value="1" /></p>
+		<p><label>接口描述：</label><textarea name="desc"></textarea></p>
+		<fieldset class="param_block" id="request_param">
+			<legend>请求参数</legend>
+			<table>
+				<thead>
+					<tr>
+						<th width="20%">参数名</th>
+						<th width="10%">参数类型</th>
+						<th width="5%">必填</th>
+						<th width="20%">默认值</th>
+						<th>描述</th>
+						<th width="8%"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><input type="text" name="request_param[0][field]" required="true" /></td>
+						<td><select name="request_param[0][data_type]"><?php foreach($this->data_type as $line) {echo '<option value="' . $line . '">' . $line . '</option>';}?></select></td>
+						<td><input type="checkbox" name="request_param[0][is_required]" value="1" /></td>
+						<td><input type="text" name="request_param[0][default]" /></td>
+						<td><input type="text" name="request_param[0][desc]" /></td>
+						<td class="action"><a href="javascript:;" class="del_param" title="删除参数">删除</a> | <a href="javascript:;" class="insert_param" title="插入参数">插入</a></td>
+					</tr>
+				</tbody>
+			</table>
+			<p class="add_param">添加参数</p>
+		</fieldset>
+		<fieldset class="param_block">
+			<legend>请求示例说明</legend>
+				<textarea name="request_code"></textarea>
+		</fieldset>
+		<fieldset class="param_block" id="result_param">
+			<legend>返回参数</legend>
+			<table>
+				<thead>
+					<tr>
+						<th width="20%">参数名</th>
+						<th width="10%">参数类型</th>
+						<th width="5%">必传</th>
+						<th width="20%">默认值</th>
+						<th>描述</th>
+						<th width="8%"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><input type="text" name="result_param[0][field]" required="true" /></td>
+						<td><select name="result_param[0][data_type]"><?php foreach($this->data_type as $line) {echo '<option value="' . $line . '">' . $line . '</option>';}?></select></td>
+						<td><input type="checkbox" name="result_param[0][is_required]" value="1" /></td>
+						<td><input type="text" name="result_param[0][default]" /></td>
+						<td><input type="text" name="result_param[0][desc]" /></td>
+						<td class="action"><a href="javascript:;" class="del_param" title="删除参数">删除</a> | <a href="javascript:;" class="insert_param" title="插入参数">插入</a></td>
+					</tr>
+				</tbody>
+			</table>
+			<p class="add_param">添加参数</p>
+		</fieldset>
+		<fieldset class="param_block">
+			<legend>返回示例说明</legend>
+				<textarea name="result_code"></textarea>
+		</fieldset>
+		<p><input type="submit" value="提 交" /></p>
+	</form>
+</div>
+<script type="text/javascript">
+var request_param_index = 0;
+</script>
+<?php $this->view('footer')?>

@@ -1,0 +1,19 @@
+<?php $this->view('header')?>
+<div id="container">
+	<h2 class="page_title"><?php echo $header_title?></a></h2>
+	<form class="form" method="post">
+		<p><label>文档名称：</label><input type="text" required="true" maxlength="20" name="title" value="<?php echo $this->config['title']?>" /></p>
+		<p><label>文本版本号：</label><input type="text" required="true" maxlength="20" name="ver" value="<?php echo $this->config['ver']?>" /></p>
+		<p><label>文档作者：</label><input type="text" required="true" maxlength="10" name="author" value="<?php echo $this->config['author']?>" /></p>
+		<p><label>开发环境域名：</label><input type="text" name="dev_domain" value="<?php echo $this->config['dev_domain']?>" /></p>
+		<p><label>测试环境域名：</label><input type="text" name="test_domain" value="<?php echo $this->config['test_domain']?>" /></p>
+		<p><label>正式环境域名：</label><input type="text" name="pro_domain" value="<?php echo $this->config['pro_domain']?>" /></p>
+		<p><label>最后更新日期：</label><input type="date" name="last_update" value="<?php echo $this->config['last_update']?>" /></p>
+		<fieldset class="param_block">
+			<legend>文档概述</legend>
+			<textarea name="desc"><?php echo $this->config['desc']?></textarea>
+		</fieldset>
+		<p><input type="submit" value="提 交" /></p>
+	</form>
+</div>
+<?php $this->view('footer')?>

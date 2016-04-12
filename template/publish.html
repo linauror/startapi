@@ -1,0 +1,354 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title><?php echo $this->config['title']?></title>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/zepto/1.1.4/zepto.min.js"></script>
+<style type="text/css">
+body,p,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,fieldset,legend,input,select,textarea,button,th,td,img{margin:0;padding:0;}
+body{min-width:1200px;color:#222222;font:14px/1.6 "Helvetica Neue","Hiragino Sans GB","Microsoft YaHei","\9ED1\4F53",Arial,sans-serif;background:#e7e8eb;}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:400;}
+ul,dl,ol{list-style:none;}
+img,fieldset{border:none;}
+i,em{font-style:normal;}
+img{vertical-align:top;}
+table{width:100%;border-collapse:collapse;border-spacing:0;empty-cells:hide;word-break:break-all;word-wrap:break-word;}
+textarea{resize:none;overflow-y:auto;font-size:100%;} 
+p{word-break:break-all;word-wrap:break-word;}
+
+a{color:#222;text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+.header{z-index:2;background-color:#fff;border-top:3px solid #44b549; border-bottom:1px solid #d9dadc; height: 57px; clear: both; position: fixed; left: 0; right: 0; top: 0;}
+.blank_header { height: 60px; width: 100%;}
+.wrap { width: 1300px; margin: 0 auto;}
+.header h1 { font-size: 30px; line-height: 60px;}
+.select_env { height: 15px; line-height: 15px; float: right; margin-top: 20px;}
+.select_env li{ float: left; padding: 0 10px; border-right: 2px solid #e7e7eb; cursor: pointer;}
+.select_env li.active { font-weight: bold;}
+.select_env li:last-child { border: none;}
+.api_search { width: 200px; float: right; padding-top: 13px;}
+.api_search input { height: 20px; border-radius: 3px; border: 1px solid #E4E3E3; padding: 3px; color: #929292;}
+
+footer { font-size: 12px; text-align: center; color: #ccc; padding-bottom: 30px;}
+
+.container{margin:5px auto 30px; border:1px solid #d9dadc; background:#fff; overflow:hidden;}
+.sidebar {margin-bottom: -9999px; padding-bottom: 9999px; width: 250px; position: fixed;}
+.menu {}
+.menu dl {line-height: 41px; border-bottom: 1px solid #e7e7eb;}
+.menu dl a {display: block; overflow: hidden;}
+.menu dl a:hover {text-decoration: none;}
+.menu dl dt {cursor: pointer;}
+.menu dl dt { padding-left: 20px;}
+.menu dl dd a{display:block; padding-left:38px;}
+.menu dl dd a:hover,.menu dl dt:hover{background:#f4f5f9;}
+.menu dl dt a{height:41px; line-height:41px;}
+.menu dl dd a{height:34px; line-height:34px;}
+.menu .open .on a,.menu .open .on a:hover{color:#ffffff;background:#44b549;color:#fff;}
+.menu dd{display:none;}
+.menu .open dd{display:block;}
+
+.content{float:right; width:1049px; height:auto; min-height:600px; border-left: 1px solid #e7e7eb;}
+.api_content { margin-bottom: 80px;}
+.api_content a {color: #459ae9}
+.api_title {padding: 0 30px; line-height: 75px; font-size: 16px; font-weight: bold; border: 1px solid #e7e7eb; border-width: 1px 0;}
+.doc_base .api_title { border-top: none;}
+.data_content { padding: 30px; padding-bottom: 50px;}
+.data_box{margin-bottom:30px;}
+.data_box .data_title{margin-bottom:20px;height:14px;line-height:14px;padding-left:7px;border-left:3px solid #44b549;}
+.data_box .data_str { padding: 0 10px;}
+.data_box .data_code {padding:14px 30px;color:#8d8d8d;background:#f4f5f9; border-radius: 5px;}
+.data_table { width: 100%; border: 1px solid #e7e7eb;}
+.data_table td, .data_table th { padding: 8px 15px; font-weight: normal; border-bottom: 1px solid #e7e7eb; text-align: left;}
+.data_table thead tr { background: #f4f5f9;}
+
+.data_form p { height: 34px; line-height: 34px; padding: 10px 0; clear: both; font-size: 14px; border-bottom: 1px solid #ccc;}
+.data_form form p:first-child { border-width: 2px;}
+.data_form form p:last-child { border: none;}
+.data_form label { width: 150px; float: left; margin-right: 10px;}
+.data_form input { width: 80%; height: 30px; border: 1px solid #ccc; border-radius: 4px; transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s; padding: 2px;}
+.data_form .submit_btn { width: 150px; height: 40px; cursor: pointer; font-size: 16px; border-radius: 3px; border: 1px solid #329436; background: #44b549; color: #FFF;}
+</style>
+<script type="text/javascript">
+// 获取cookie
+function getCookie(name) { 
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+    if (arr = document.cookie.match(reg)) {
+        return unescape(arr[2]); 
+    } else {
+        return ''; 
+    } 
+} 
+// 设置cookie
+function setCookie(name, value, expire, domain, path) {
+    var exp = new Date();
+    exp.setTime(exp.getTime() + expire * 1000);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString() + ((domain) ? "; domain=" + domain : "") + ((path) ? "; path=" + path : "");
+}
+// 获取url参数
+function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+}
+
+function set_domain(env) {
+	if (! env) {
+		env = 'dev';
+	}
+	startapi_env = env;
+	setCookie('startapi_env', startapi_env, 86400 * 365);	
+	domain = domain_config[startapi_env];
+	$('.api_url').html(domain + $('.api_url').attr('uri'));
+	$('.api_form').attr('action', domain + $('.api_form').attr('uri'));
+}
+var domain_config = new Object();
+domain_config.dev = '<?php echo $this->config['dev_domain']?>';
+domain_config.test = '<?php echo $this->config['test_domain']?>';
+domain_config.pro = '<?php echo $this->config['pro_domain']?>';
+var domain = domain_config.dev;
+
+$(function() {
+	set_domain(getQueryString('env') || getCookie('startapi_env'));
+	
+	$('.select_env .env_' + startapi_env).addClass('active');
+	
+	$('.menu dt').click(function() {
+		$(this).parent('dl').addClass('open').siblings().removeClass('open');
+	})
+	$('.menu dd').click(function() {
+		$(this).addClass('on').siblings().removeClass('on');
+	})
+	$('.select_env li').click(function() {
+		$(this).addClass('active').siblings().removeClass('active');
+		set_domain($(this).attr('env'));
+	})
+	
+	$(window).scroll(function(){
+		var top = $('body').scrollTop();
+		var cur_api_id = '';
+		
+		$('.api_title').each(function() {
+			var title_to_top = $(this).offset().top;
+			if (top > title_to_top - 100) {
+				cur_api_id = '#' + $(this).attr('id');
+			} else {
+				return false;
+			}
+		})
+		
+		if (cur_api_id != $('.menu .on').attr('href')) {
+			$('.menu dd').removeClass('on');
+			$('.menu').find('a[href="' + cur_api_id + '"]').parent('dd').addClass('on');
+			$('.menu').find('a[href="' + cur_api_id + '"]').parents('dl').addClass('open').siblings().removeClass('open');
+			window.history.pushState({}, 0, cur_api_id);
+		}
+	})
+	
+	$('.api_search input').keyup(function() {  
+		var q = $.trim($(this).val());
+		if (! q.length) {
+			$('.api_box').show();
+			return false;
+		}
+		if (event.keyCode == 13) {
+			$('.api_title').each(function() {
+				api_keywords = $(this).attr('keywords');
+				var re = new RegExp(q, 'gi');
+				if (! api_keywords.match(re)) {
+					$(this).parent('.api_box').hide();
+				} else {
+					$(this).parent('.api_box').show();
+				}
+			})
+		}
+	})
+	
+})
+</script>
+</head>
+<body>
+<header class="header">
+	<p class="header_line"></p>
+	<div class="wrap">
+		<ul class="select_env">
+			<li class="env_dev" env="dev">开发环境</li>
+			<li class="env_test" env="test">测试环境</li>
+			<li class="env_pro" env="pro">正式环境</li>
+		</ul>
+		<p class="api_search"><input type="text" placeholder="输入关键词+回车" /></p>
+		<h1><?php echo $this->config['title']?></h1>
+	</div>
+</header>
+<div class="blank_header"></div>
+<div class="container wrap">
+	<div class="sidebar">
+	    <div class="menu">
+	        <dl>
+	            <dt><a href="#api_first">文档概述</a></dt>
+	        </dl>
+	    	<?php foreach ($type_lists as $type) {?>
+	        <dl>
+	            <dt><?php echo $type['title']?></dt>
+            	<?php 
+            	if (isset($api_lists[$type['id']])) {
+					foreach($api_lists[$type['id']] as $api) {
+				?>
+	            <dd><a href="#api_<?php echo $api['title']?>"><?php echo $api['title']?></a></dd>
+	            <?php } } ?>
+	        </dl>
+	        <?php } ?>
+	    </div>
+	</div>
+	<div class="content">
+		<div class="api_content">
+			<div class="api_box doc_base">
+				<h2 class="api_title" id="api_first" keywords="文档概述">文档概述</h2>
+				<div class="data_content">
+					<div class="data_box">
+						<h3 class="data_title">概述</h3>
+						<p class="data_str"><?php echo $this->config['desc']?></p>
+					</div>
+					<div class="data_box">
+						<h3 class="data_title">版本</h3>
+						<p class="data_str"><?php echo $this->config['ver']?></p>
+					</div>
+					<div class="data_box">
+						<h3 class="data_title">最后更新</h3>
+						<p class="data_str"><?php echo $this->config['last_update']?></p>
+					</div>
+					<div class="data_box">
+						<h3 class="data_title">作者</h3>
+						<p class="data_str"><?php echo $this->config['author']?></p>
+					</div>
+					<div class="data_box">
+						<h3 class="data_title">接口域名</h3>
+						<p class="data_str">
+						开发环境：<?php echo $this->config['dev_domain']?><br />
+						测试环境：<?php echo $this->config['test_domain']?><br />
+						正式环境：<?php echo $this->config['pro_domain']?><br />
+						</p>
+					</div>
+				</div>
+			</div>
+			<?php 
+			foreach ($type_lists as $type) {
+            	if (isset($api_lists[$type['id']])) {
+					foreach($api_lists[$type['id']] as $api) {	
+			?>
+			<div class="api_box">
+				<h2 class="api_title" keywords="<?php echo $api['title'] . $api['uri'] . $api['desc']?>" id="api_<?php echo $api['title']?>"><?php echo $api['title']?></h2>
+				<div class="data_content">
+					<div class="data_box">
+						<h3 class="data_title"><?php echo $api['uri']?></h3>
+						<p class="data_str"><?php echo $api['desc']?></p>
+					</div>
+					<div class="data_box">
+						<h3 class="data_title">URL</h3>
+						<p class="data_str"><span class="api_url" uri="<?php echo $api['uri']?>"><?php echo $api['uri']?></span></p>
+					</div>
+					<div class="data_box">
+						<h3 class="data_title">请求方式</h3>
+						<p class="data_str"><?php echo strtoupper($api['method_type'])?></p>
+					</div>
+					<div class="data_box">
+						<h3 class="data_title">是否需要授权</h3>
+						<p class="data_str"><?php echo $api['is_authed'] ? '是' : '否'?></p>
+					</div>
+					<?php 
+					$request_param = json_decode($api['request_param'], true);
+					if (count($request_param)) {
+					?>
+					<div class="data_box">
+						<h3 class="data_title">请求参数</h3>
+						<table class="data_table">
+	     					<thead>
+								<tr>
+									<th width="20%">参数名</th>
+									<th width="10%">参数类型</th>
+									<th width="7%">必填</th>
+									<th width="20%">默认值</th>
+									<th>描述</th>
+								</tr>
+	     					</thead>
+							<tbody>
+								<?php foreach ($request_param as $k => $v) { ?>							
+								<tr>
+									<td><?php echo $v['field']?></td>
+									<td><?php echo $v['data_type']?></td>
+									<td><?php echo $v['is_required'] ? '是' : '否'?></td>
+									<td><?php echo $v['default']?></td>
+									<td><?php echo $v['desc']?></td>
+								</tr>
+								<?php } ?>
+	     					</tbody>
+		    			</table>
+					</div>
+					<?php } if ($api['request_code']) { ?>
+					<div class="data_box">
+						<h3 class="data_title">请求示例说明</h3>
+						<div class="data_code">
+							<pre><?php echo htmlspecialchars($api['request_code'])?></pre>				
+						</div>
+					</div>
+					<?php } 
+					$result_param = json_decode($api['result_param'], true);
+					if (count($result_param)) {
+					?>
+					<div class="data_box">
+						<h3 class="data_title">返回参数</h3>
+						<table class="data_table">
+	     					<thead>
+								<tr>
+									<th width="20%">参数名</th>
+									<th width="10%">参数类型</th>
+									<th width="7%">必传</th>
+									<th width="20%">默认值</th>
+									<th>描述</th>
+								</tr>
+	     					</thead>
+							<tbody>
+								<?php foreach ($result_param as $k => $v) { ?>							
+								<tr>
+									<td><?php echo $v['field']?></td>
+									<td><?php echo $v['data_type']?></td>
+									<td><?php echo $v['is_required'] ? '是' : '否'?></td>
+									<td><?php echo $v['default']?></td>
+									<td><?php echo $v['desc']?></td>
+								</tr>
+								<?php } ?>
+	     					</tbody>
+		    			</table>
+					</div>
+					<?php } if ($api['request_code']) { ?>
+					<div class="data_box">
+						<h3 class="data_title">返回示例说明</h3>
+						<div class="data_code">
+							<pre><?php echo htmlspecialchars($api['result_code'])?></pre>					
+						</div>
+					</div>
+					<?php } ?>
+					<div class="data_box">
+						<h3 class="data_title">接口测试</h3>
+						<div class="data_form">	
+							<form action="" class="api_form" uri="<?php echo $api['uri']?>" method="<?php echo $api['method_type']?>" target="_blank">
+								<p><label>参数名</label>参数值</p>
+								<?php
+								if (count($request_param)) {
+									foreach ($request_param as $k => $v) {
+								?>
+								<p><label><?php echo $v['field']?></label><input type="text" name="<?php echo $v['field']?>" <?php echo $v['is_required'] ? 'required' : ''?> value="<?php echo $v['default']?>" /></p>
+								<?php } } ?>
+								<p><input type="submit" value="测 试" class="submit_btn" /></p>
+							</form>				
+						</div>
+					</div>
+				</div>
+			</div>
+			<?php } } } ?>
+		</div>
+	</div>
+</div>
+<footer>Powered By StartApi</footer>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title><?php echo $header_title?> - <?php echo $this->config['title']?></title>
+<link type="text/css" rel="stylesheet" href="<?php echo TEMPLATE_URL?>css/style.css" />
+<script type="text/javascript" src="<?php echo TEMPLATE_URL?>js/zepto.min.js"></script>
+<script type="text/javascript" src="<?php echo TEMPLATE_URL?>js/main.js"></script>
+</head>
+
+<body>
+	<header>
+		<h1><a href="<?php echo DOMAIN?>"><?php echo $this->config['title']?></a></h1>
+		<p>版本：<?php echo $this->config['ver']?>&nbsp;作者：<?php echo $this->config['author']?>&nbsp;最后更新：<?php echo $this->config['last_update']?> <a href="<?php echo $this->site_url('set')?>">设置</a> | <a href="<?php echo $this->site_url('publish')?>">发布</a></p>
+	</header>
